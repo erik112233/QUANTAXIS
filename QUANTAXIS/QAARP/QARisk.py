@@ -93,7 +93,7 @@ class QA_Risk():
     预期PNL/统计学PNL
     """
 
-    def __init__(self, account, benchmark_code='000300', benchmark_type=MARKET_TYPE.INDEX_CN, if_fq=True):
+    def __init__(self, account, benchmark_code='000300', benchmark_type=MARKET_TYPE.INDEX_CN, if_fq=True, market_data=None):
         """
         account: QA_Account类/QA_PortfolioView类
         benchmark_code: [str]对照参数代码
@@ -107,8 +107,11 @@ class QA_Risk():
 
         self.fetch = {MARKET_TYPE.STOCK_CN: QA_fetch_stock_day_adv,
                       MARKET_TYPE.INDEX_CN: QA_fetch_index_day_adv}
-        self.market_data = QA_fetch_stock_day_adv(
-            self.account.code, self.account.start_date, self.account.end_date)
+        if self.account.market_type == MARKET_TYPE.STOCK_CN:
+            self.market_data = QA_fetch_stock_day_adv(
+                self.account.code, self.account.start_date, self.account.end_date)
+        elif self.account.market_type == MARKET_TYPE.FUTURE_CN:
+            self.market_data = market_data
         self.if_fq = if_fq
 
         self._assets = (self.market_value.sum(
@@ -634,6 +637,7 @@ class QA_Performance():
         画出pnl比率散点图
         """
         plt.scatter(x=pnl.sell_date.apply(str), y=pnl.pnl_ratio)
+        plt.gcf().autofmt_xdate()
         return plt
 
     def plot_pnlmoney(self, pnl):
@@ -641,7 +645,7 @@ class QA_Performance():
         画出pnl盈亏额散点图
         """
         plt.scatter(x=pnl.sell_date.apply(str), y=pnl.pnl_money)
-        plt.show()
+        plt.gcf().autofmt_xdate()
         return plt
 
     def abnormal_active(self):

@@ -1,6 +1,6 @@
 # coding:utf-8
 
-from QUANTAXIS.QABacktest.QABacktest import QA_Backtest
+from QUANTAXIS.QAApplication.QABacktest import QA_Backtest
 
 """
 日内t0的回测框架
@@ -17,7 +17,7 @@ class QAT0Backtest(QA_Backtest):
 
     def __init__(self, market_type, frequence, start, end, code_list, raw_holding, commission_fee):
         super().__init__(market_type, frequence, start, end, code_list, commission_fee)
-        
+
         self.raw_holding = raw_holding  # 初始持仓
 
     def _settle(self):

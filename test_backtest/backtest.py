@@ -25,7 +25,7 @@
 
 from QUANTAXIS.QAARP.QARisk import QA_Risk
 from QUANTAXIS.QAARP.QAUser import QA_User
-from QUANTAXIS.QABacktest.QABacktest import QA_Backtest
+from QUANTAXIS.QAApplication.QABacktest import QA_Backtest
 from QUANTAXIS.QAUtil.QALogs import QA_util_log_info
 from QUANTAXIS.QAUtil.QAParameter import FREQUENCE, MARKET_TYPE
 from test_backtest.minstrategy import MAMINStrategy
@@ -55,9 +55,12 @@ class Backtest(QA_Backtest):
                        benchmark_type=MARKET_TYPE.INDEX_CN)
 
         print(risk().T)
-        risk.plot_assets_curve()
-        risk.plot_dailyhold()
-        risk.plot_signal()
+        fig=risk.plot_assets_curve()
+        fig.show()
+        fig=risk.plot_dailyhold()
+        fig.show()
+        fig=risk.plot_signal()
+        fig.show()
         self.account.save()
         risk.save()
 
